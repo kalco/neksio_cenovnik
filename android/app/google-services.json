@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "305134648105",
+    "firebase_url": "https://neksiocenovnik-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "neksiocenovnik",
+    "storage_bucket": "neksiocenovnik.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305134648105:android:47b28c30ae574752e85538",
+        "android_client_info": {
+          "package_name": "com.example.g_sheets"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305134648105-u876ph6f3ail1rtn3opjuscrj8qhjr8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1GI8cV2OwrhwXti1u5jxYg1MamIUgBPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305134648105-u876ph6f3ail1rtn3opjuscrj8qhjr8v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "305134648105-26bcf5uclfrrvvq8r2vb7b39qhebofb8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gSheets"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305134648105:android:23255e8a03c39a87e85538",
+        "android_client_info": {
+          "package_name": "com.roka.neksio_cenovnik"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305134648105-u876ph6f3ail1rtn3opjuscrj8qhjr8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1GI8cV2OwrhwXti1u5jxYg1MamIUgBPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305134648105-u876ph6f3ail1rtn3opjuscrj8qhjr8v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "305134648105-26bcf5uclfrrvvq8r2vb7b39qhebofb8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gSheets"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
