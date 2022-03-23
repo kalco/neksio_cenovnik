@@ -21,7 +21,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             controller: controller,
             style: const TextStyle(color: Colors.white),
             onChanged: widget.onChanged,
-            placeholder: "Пребарај продукти...",
+            placeholder: "Пребарај производи...",
             placeholderStyle: const TextStyle(
               color: Colors.white,
             ),

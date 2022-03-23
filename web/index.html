@@ -100,5 +100,26 @@
       loadMainDartJs();
     }
   </script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <!-- Firebase Configuration -->
+  <script>
+      var firebaseConfig = {
+         apiKey: "AIzaSyD73Ow_Z4Nn58VL4dR4lcpmBWgjdTyn3VY",
+        authDomain: "neksiocenovnik.firebaseapp.com",
+        databaseURL: "https://neksiocenovnik-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "neksiocenovnik",
+        storageBucket: "neksiocenovnik.appspot.com",
+        messagingSenderId: "305134648105",
+        appId: "1:305134648105:web:68ff9f96e61b9a1fe85538",
+        measurementId: "G-BF1PECR7LG"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+
 </body>
 </html>

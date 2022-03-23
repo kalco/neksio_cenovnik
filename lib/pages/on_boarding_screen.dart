@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:neksio_cenovnik/pages/home_page.dart';
 
 class OnBoarding extends StatefulWidget {
@@ -78,14 +78,12 @@ class _OnBoardingState extends State<OnBoarding> {
                       child: ElevatedButton(
                         onPressed: query.isNotEmpty
                             ? () {
-                                final box = Hive.box('Name');
-                                box.put(1, query);
-                                FocusScope.of(context).unfocus();
-
+                                final nameStorage = GetStorage();
+                                nameStorage.write('name', query);
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => HomePage(name: query),
+                                    builder: (context) => const HomePage(),
                                   ),
                                 );
                               }

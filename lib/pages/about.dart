@@ -115,7 +115,7 @@ class About extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    "v 1.0.0",
+                    "v 1.0.1",
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
                     ),

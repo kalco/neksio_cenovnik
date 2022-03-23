@@ -15,7 +15,10 @@ class _FavoriteBottomSheetState extends State<FavoriteBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final favStorage = GetStorage();
-    favList = favStorage.read('fav');
+    if(favStorage.read('fav')!=null)
+      {
+        favList = favStorage.read('fav');
+      }
 
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -26,7 +29,9 @@ class _FavoriteBottomSheetState extends State<FavoriteBottomSheet> {
             color: Colors.white,
           ),
           child: Container(
-            child: ListView(
+            
+            child:favList.isNotEmpty ?
+            ListView(
               physics: const BouncingScrollPhysics(),
               children: [
                 Padding(
@@ -130,7 +135,7 @@ class _FavoriteBottomSheetState extends State<FavoriteBottomSheet> {
                                 ],
                               ),
                             ),
-                            Divider(
+                                                 Divider(
                               color: Colors.black.withOpacity(.2),
                               thickness: 1.5,
                             )
@@ -141,8 +146,37 @@ class _FavoriteBottomSheetState extends State<FavoriteBottomSheet> {
                   },
                 )
               ],
+            ):
+            ListView(
+              physics: const BouncingScrollPhysics(),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: const Icon(Icons.arrow_back, color: Colors.black)),
+                      const Text(
+                        "Омилени производи",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox()
+                    ],   
+                  ),
+                ), 
+                 const SizedBox(height: 100),
+                     const Align ( 
+                       alignment: Alignment.center,       
+                   child: Text('Сеуште немате омилени производи', style: TextStyle(color: Colors.grey),),
             ),
-            color: Colors.white,
+              ],
+            ),
           ),
         ),
       ),

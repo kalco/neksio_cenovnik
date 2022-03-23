@@ -42,6 +42,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
   }
 
   final databaseReference = FirebaseDatabase.instance.reference();
+  
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -127,7 +128,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 26.0, vertical: 26),
                                     child: Text(
-                                      "Прозводи",
+                                      "Производи",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,

@@ -88,10 +88,10 @@ class _GroupCardState extends State<GroupCard> {
               const SizedBox(
                 height: 5,
               ),
-              Text(
+              SelectableText(
                 widget.description,
                 textAlign: TextAlign.center,
-                overflow: TextOverflow.clip,
+                //overflow: TextOverflow.clip,
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
