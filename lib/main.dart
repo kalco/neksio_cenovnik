@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
     final name = nameStorage.read('name');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Neksio Cenovnik',
+      title: 'Нексио Ценовник',
       theme: ThemeData(
           primarySwatch: Colors.blue,
           textTheme: GoogleFonts.openSansTextTheme()),
