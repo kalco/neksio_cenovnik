@@ -1,0 +1,47 @@
+{
+
+    "signIn": "Внесете го вашето име за до го видите ценовникот.",
+    "yourName": "Вашето име",
+    "zdravo": "Здраво, ",
+    "home": "Почетна",
+    "search": "Пребарај",
+    "favorite": "Омилени",
+    "about": "Нексио",
+    "favoriteProducts": "Омилени производи",
+    "noFavorite" : "Сеуште немате омилени производи",
+    "contactInfo": "Контакт информации",
+    "version": "Верзија: {version} ({buildNumber})",
+    "@version": {
+        "description": "Верзија на апликацијата",
+        "placeholders": {
+          "version": {},
+          "buildNumber" : {}
+        }
+      },
+      "totalProducts": "Вкупно {count} производи",
+      "@totalProducts": {
+        "description": "Вкупно производи",
+        "placeholders": {
+          "count": {}
+      }
+    },
+
+    "productCode": "Код:",
+    "productCat": "Подкатегорија:",
+    "productBrend": "Бренд:",
+    "neksioKompjuteri": "Нексио Компјутери",
+    "searchProductPlaceholder": "Пребарај производи...",
+    "listAllProduct": "Дознај цени на повеќе од 1200 производи",
+    "neksioCenovnik": "Нексио Ценовник",
+    "emptyField": "Внесете го вашето име за да продолжите",
+    "aboutNeksio": "За нексио компјутери",
+    "aboutNeksioDesc": "Оваа апликиација е неофицијална и не е поддржана од Нексио компјутер.\nСите податоци во оваа апликација се од јавен карактер и не сносувам никаква одговорност за веродостојноста на истите.",
+    "signInButton": "Влези",
+    "searchBy": "Пребарај по",
+    "searchByCategories": "Категории",
+    "productStock":"Лагер",
+    "productPrice":"Цена",
+    "productWarranty":"Гаранција",
+    "productVat":"ДДВ",
+    "productDetails":"Детали"
+}

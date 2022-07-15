@@ -1,13 +1,5 @@
 class CenovnikModel {
-  final String code,
-      group,
-      subgroup,
-      brend,
-      description,
-      warranty,
-      vat,
-      stock,
-      price;
+  final String code, group, subgroup, brend, description, warranty, vat, stock, price;
 
   CenovnikModel(
       {required this.code,
