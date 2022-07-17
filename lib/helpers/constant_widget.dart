@@ -32,6 +32,20 @@ class ConstantWidget {
     );
   }
 
+    static Widget getSelectableText(String text, Color color, TextAlign textAlign,
+      FontWeight fontWeight, double textSizes) {
+    return SelectableText(
+      text,
+      style: TextStyle(
+          decoration: TextDecoration.none,
+          fontSize: textSizes,
+          color: color,
+          fontFamily: ConstantData.fontsFamily,
+          fontWeight: fontWeight),
+      textAlign: textAlign,
+    );
+  }
+
   static Widget getTextWidget(String text, Color color, TextAlign textAlign,
       FontWeight fontWeight, double textSizes) {
     return Text(

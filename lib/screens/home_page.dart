@@ -305,8 +305,9 @@ class _HomePage extends State<HomePage> {
     double radius = ConstantWidget.getPercentSize(height, 18);
 
     return Scaffold(
-      body:  SafeArea(
+      body:  SafeArea(   
         child: Container(
+           color: bgColor,
           child: Column(
             children: [
               Container(

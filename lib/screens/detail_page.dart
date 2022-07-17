@@ -101,7 +101,7 @@ class _DetailScreen extends State<DetailScreen> {
                     children: [
                       Padding(
                         padding: EdgeInsets.all(margin),
-                        child: ConstantWidget.getTextWidget(
+                        child: ConstantWidget.getSelectableText(
                             widget.cenovnikModel.description,
                             textColor,
                             TextAlign.left,

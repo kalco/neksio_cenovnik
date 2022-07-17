@@ -1,4 +1,3 @@
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +44,8 @@ class _SearchWidget extends State<SearchWidget> {
     return WillPopScope(
     child:Scaffold(
       body:SafeArea(
+       child: Container(
+           color: bgColor,
         child: Column(
           children: [
             Container(
@@ -157,6 +158,7 @@ class _SearchWidget extends State<SearchWidget> {
             ),
           ],
         ) ,
+      ),
       ),
     ),
      onWillPop: _requestPop);
