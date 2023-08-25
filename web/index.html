@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -27,11 +28,12 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>neksio_cenovnik</title>
   <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
@@ -105,21 +107,22 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <!-- Firebase Configuration -->
   <script>
-      var firebaseConfig = {
-         apiKey: "AIzaSyD73Ow_Z4Nn58VL4dR4lcpmBWgjdTyn3VY",
-        authDomain: "neksiocenovnik.firebaseapp.com",
-        databaseURL: "https://neksiocenovnik-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "neksiocenovnik",
-        storageBucket: "neksiocenovnik.appspot.com",
-        messagingSenderId: "305134648105",
-        appId: "1:305134648105:web:68ff9f96e61b9a1fe85538",
-        measurementId: "G-BF1PECR7LG"
-      };
+    const firebaseConfig = {
+      apiKey: "AIzaSyD73Ow_Z4Nn58VL4dR4lcpmBWgjdTyn3VY",
+      authDomain: "neksiocenovnik.firebaseapp.com",
+      databaseURL: "https://neksiocenovnik-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "neksiocenovnik",
+      storageBucket: "neksiocenovnik.appspot.com",
+      messagingSenderId: "305134648105",
+      appId: "1:305134648105:web:68ff9f96e61b9a1fe85538",
+      measurementId: "G-BF1PECR7LG"
+    };
 
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-    </script>
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 
 
 </body>
+
 </html>

@@ -70,7 +70,7 @@ class _DetailScreen extends State<DetailScreen> {
     var _width = (_screenWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
         _crossAxisCount;
     var _aspectRatio = _width / cellHeight;
-        double padding = ConstantWidget.getWidthPercentSize(context, 3);
+    double padding = ConstantWidget.getWidthPercentSize(context, 3);
 
     return WillPopScope(
         child: Scaffold(
@@ -114,21 +114,34 @@ class _DetailScreen extends State<DetailScreen> {
                           text: TextSpan(
                             text: S.of(context).productCode,
                             style: TextStyle(
-          decoration: TextDecoration.none,
-          fontSize: ConstantWidget.getScreenPercentSize(context, 1.6),
-          color: subTextColor,
-          fontFamily: ConstantData.fontsFamily,
-          fontWeight: FontWeight.w400),
-          children: <TextSpan>[
-             TextSpan(text: ' #' + widget.cenovnikModel.code, style: const TextStyle(fontWeight: FontWeight.w600)),
-              const TextSpan(text: ' | '),
-              TextSpan(text: S.of(context).productCat + ' '),
-              TextSpan(text: widget.cenovnikModel.subgroup.isNotEmpty ? widget.cenovnikModel.subgroup : "N/A", style: const TextStyle(fontWeight: FontWeight.w600)),
-              const TextSpan(text: ' | '),
-              TextSpan(text: S.of(context).productBrend + ' '),
-              TextSpan(text: widget.cenovnikModel.brend.isNotEmpty ? widget.cenovnikModel.brend : "N/A", style: const TextStyle(fontWeight: FontWeight.w600)),
-
-          ],
+                                decoration: TextDecoration.none,
+                                fontSize: ConstantWidget.getScreenPercentSize(
+                                    context, 1.6),
+                                color: subTextColor,
+                                fontFamily: ConstantData.fontsFamily,
+                                fontWeight: FontWeight.w400),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: ' #' + widget.cenovnikModel.code,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600)),
+                              const TextSpan(text: ' | '),
+                              TextSpan(text: S.of(context).productCat + ' '),
+                              TextSpan(
+                                  text: widget.cenovnikModel.subgroup.isNotEmpty
+                                      ? widget.cenovnikModel.subgroup
+                                      : "N/A",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600)),
+                              const TextSpan(text: ' | '),
+                              TextSpan(text: S.of(context).productBrend + ' '),
+                              TextSpan(
+                                  text: widget.cenovnikModel.brend.isNotEmpty
+                                      ? widget.cenovnikModel.brend
+                                      : "N/A",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600)),
+                            ],
                           ),
                         ),
                       ),
@@ -141,44 +154,54 @@ class _DetailScreen extends State<DetailScreen> {
                           ],
                         ),
                       ),
-                     SizedBox(
-                          height: margin,
+                      SizedBox(
+                        height: margin,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: margin),
+                        child: Row(
+                          children: [
+                            getButton(
+                                S.of(context).productPrice,
+                                widget.cenovnikModel.price,
+                                ConstantData.color1,
+                                LineIcons.coins),
+                            SizedBox(
+                              width: padding,
+                            ),
+                            getButton(
+                                S.of(context).productStock,
+                                widget.cenovnikModel.stock,
+                                widget.cenovnikModel.stock.length > 2
+                                    ? ConstantData.color5
+                                    : ConstantData.color4,
+                                LineIcons.lineChart),
+                          ],
                         ),
-      Padding(
-      padding: EdgeInsets.symmetric(horizontal: margin),
-      child: Row(
-        children: [
-          getButton(S.of(context).productPrice, widget.cenovnikModel.price, ConstantData.color1,
-              LineIcons.coins),
-          SizedBox(
-            width: padding,
-          ),
-          getButton(
-              S.of(context).productStock, widget.cenovnikModel.stock, widget.cenovnikModel.stock.length > 2 ? ConstantData.color5 :ConstantData.color4 , LineIcons.lineChart),
-        ],
-        
-      ),
-      
-    ),
-    SizedBox(
-                          height: margin,
+                      ),
+                      SizedBox(
+                        height: margin,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: margin),
+                        child: Row(
+                          children: [
+                            getButton(
+                                S.of(context).productWarranty,
+                                widget.cenovnikModel.warranty + " денови",
+                                subTextColor,
+                                LineIcons.alternateShield),
+                            SizedBox(
+                              width: padding,
+                            ),
+                            getButton(
+                                S.of(context).productVat,
+                                widget.cenovnikModel.vat + "%",
+                                subTextColor,
+                                LineIcons.percent),
+                          ],
                         ),
-    Padding(
-      padding: EdgeInsets.symmetric(horizontal: margin),
-      child: Row(
-        children: [
-          getButton(S.of(context).productWarranty, widget.cenovnikModel.warranty +" денови", subTextColor,
-              LineIcons.alternateShield),
-          SizedBox(
-            width: padding,
-          ),
-          getButton(
-              S.of(context).productVat, widget.cenovnikModel.vat + "%", subTextColor , LineIcons.percent),
-        ],
-        
-      ),
-      
-    ),
+                      ),
                     ],
                   ),
                 ),
@@ -229,7 +252,7 @@ class _DetailScreen extends State<DetailScreen> {
     );
   }
 
-   getButton(String s, String s1, Color color, var icon) {
+  getButton(String s, String s1, Color color, var icon) {
     double height = ConstantWidget.getScreenPercentSize(context, 3);
 
     return Expanded(
@@ -271,7 +294,8 @@ class _DetailScreen extends State<DetailScreen> {
                   height: 2,
                 ),
                 ConstantWidget.getCustomText(
-                    s1, color,
+                    s1,
+                    color,
                     2,
                     TextAlign.start,
                     FontWeight.w600,

@@ -37,9 +37,9 @@ dependencies:
   bottom_navy_bar: ^6.0.0
   http: ^0.13.4
   intl: ^0.17.0
-  firebase_database: ^8.2.0
-  firebase_core: ^1.10.1
-  firebase_messaging: ^11.2.0
+  firebase_database: ^10.0.9
+  firebase_core: ^2.4.1
+  firebase_messaging: ^14.2.1
   get_storage: ^2.0.3
   line_icons: ^2.0.1
   provider: ^6.0.1
@@ -48,6 +48,7 @@ dependencies:
   visibility_detector: ^0.2.2
   auto_size_text_pk: ^3.0.0
   flutter_statusbarcolor_ns: ^0.4.0
+  firebase_database_web: ^0.2.1+19
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -305,9 +307,9 @@ class _HomePage extends State<HomePage> {
     double radius = ConstantWidget.getPercentSize(height, 18);
 
     return Scaffold(
-      body:  SafeArea(   
+      body:  SafeArea(
         child: Container(
-           color: bgColor,
+          color: bgColor,
           child: Column(
             children: [
               Container(

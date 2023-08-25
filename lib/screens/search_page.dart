@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,6 @@ class _SearchWidget extends State<SearchWidget> {
   String query = '';
   late List<CenovnikModel> filteredList = [];
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -42,126 +43,128 @@ class _SearchWidget extends State<SearchWidget> {
     double radius = ConstantWidget.getPercentSize(height, 18);
 
     return WillPopScope(
-    child:Scaffold(
-      body:SafeArea(
-       child: Container(
-           color: bgColor,
-        child: Column(
-          children: [
-            Container(
-              height: height,
-              decoration: BoxDecoration(
-                  color: primaryColor,),
+        child: Scaffold(
+          body: SafeArea(
+            child: Container(
+              color: bgColor,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Container(
-                        margin: EdgeInsets.all(ConstantWidget.getScreenPercentSize(context, 2)),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: InkWell(
-                            onTap: (){
-                              _requestPop();
-                            },
-                            child: const Icon(
-                              LineIcons.angleLeft,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
-
-                    ),
-
-
-                    flex: 1,),
                   Container(
-                    margin: EdgeInsets.all(
-                        ConstantWidget.getScreenPercentSize(context, 2)),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ConstantWidget.getScreenPercentSize(
-                            context, 1)),
-                    height: searchHeight,
+                    height: height,
                     decoration: BoxDecoration(
-                        color: cellColor,
-                        borderRadius: BorderRadius.all(Radius.circular(
-                            ConstantWidget.getPercentSize(
-                                searchHeight, 18)))),
-                    child: Row(
+                      color: primaryColor,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(CupertinoIcons.search,
-                            color: textColor,
-                            size: ConstantWidget.getPercentSize(
-                                (searchHeight / 1.3), 50)),
                         Expanded(
-                          child: InkWell(
-                            onTap: () {
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: (margin / 2)),
+                          child: Container(
+                              margin: EdgeInsets.all(
+                                  ConstantWidget.getScreenPercentSize(
+                                      context, 2)),
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: TextField(
-                                  style: TextStyle(
-                                      color: textColor,
-                                      fontSize:
-                                      ConstantWidget.getPercentSize(
-                                          searchHeight, 30)),
-                                  controller: _searchview,
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintStyle: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize:
-                                          ConstantWidget.getPercentSize(
-                                              searchHeight, 30)),
-                                      hintText: 'Внесете име на производ овде...'),
+                                child: InkWell(
+                                  onTap: () {
+                                    _requestPop();
+                                  },
+                                  child: const Icon(
+                                    LineIcons.angleLeft,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
+                              )),
                           flex: 1,
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(
+                              ConstantWidget.getScreenPercentSize(context, 2)),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: ConstantWidget.getScreenPercentSize(
+                                  context, 1)),
+                          height: searchHeight,
+                          decoration: BoxDecoration(
+                              color: cellColor,
+                              borderRadius: BorderRadius.all(Radius.circular(
+                                  ConstantWidget.getPercentSize(
+                                      searchHeight, 18)))),
+                          child: Row(
+                            children: [
+                              Icon(CupertinoIcons.search,
+                                  color: textColor,
+                                  size: ConstantWidget.getPercentSize(
+                                      (searchHeight / 1.3), 50)),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: (margin / 2)),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: TextField(
+                                        style: TextStyle(
+                                            color: textColor,
+                                            fontSize:
+                                                ConstantWidget.getPercentSize(
+                                                    searchHeight, 30)),
+                                        controller: _searchview,
+                                        decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintStyle: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: ConstantWidget
+                                                    .getPercentSize(
+                                                        searchHeight, 30)),
+                                            hintText:
+                                                'Внесете име на производ овде...'),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                flex: 1,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
+                  StreamBuilder(
+                    stream: databaseReference.onValue,
+                    builder: (context, snapshot) {
+                      List<CenovnikModel> cenovnikList = [];
+                      if (snapshot.hasData) {
+                        final card = List<dynamic>.from(
+                            (snapshot.data! as Event).snapshot.value);
+                        for (var key in card) {
+                          final next = Map<String, dynamic>.from(key);
+                          CenovnikModel descriptionModel = CenovnikModel(
+                            code: next['Code'].toString(),
+                            group: next['Group'].toString(),
+                            subgroup: next['Subgroup'].toString(),
+                            brend: next['Brend'].toString(),
+                            description: next['Description'].toString(),
+                            warranty: next['warranty (days)'].toString(),
+                            vat: next['Vat'].toString(),
+                            stock: next['Stock'].toString(),
+                            price: next['Price'].toString(),
+                          );
+                          cenovnikList.add(descriptionModel);
+                        }
+                      }
+                      return query.isNotEmpty
+                          ? _performSearch(cenovnikList)
+                          : Container();
+                    },
+                  ),
                 ],
               ),
-
             ),
-            StreamBuilder(
-              stream: databaseReference.onValue,
-              builder: (context, snapshot) {
-                List<CenovnikModel> cenovnikList = [];
-                if (snapshot.hasData) {
-                  final card = List<dynamic>.from((snapshot.data! as Event).snapshot.value);
-                  for (var key in card) {
-                    final next = Map<String, dynamic>.from(key);
-                    CenovnikModel descriptionModel = CenovnikModel(
-                      code: next['Code'].toString(),
-                      group: next['Group'].toString(),
-                      subgroup: next['Subgroup'].toString(),
-                      brend: next['Brend'].toString(),
-                      description: next['Description'].toString(),
-                      warranty: next['warranty (days)'].toString(),
-                      vat: next['Vat'].toString(),
-                      stock: next['Stock'].toString(),
-                      price: next['Price'].toString(),
-                    );
-                    cenovnikList.add(descriptionModel);
-                  }
-                }
-                return query.isNotEmpty ? _performSearch(cenovnikList) : Container();
-              },
-            ),
-          ],
-        ) ,
-      ),
-      ),
-    ),
-     onWillPop: _requestPop);
+          ),
+        ),
+        onWillPop: _requestPop);
   }
 
   Widget _performSearch(List<CenovnikModel> allProducts) {
@@ -182,67 +185,77 @@ class _SearchWidget extends State<SearchWidget> {
     double margin = ConstantWidget.getScreenPercentSize(context, 2);
     double cellHeight = ConstantWidget.getWidthPercentSize(context, 35);
     return Flexible(
-        child:ListView.builder(
-          itemCount: filteredList.length,
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: (){
-                Navigator.push(context,MaterialPageRoute(builder: (context) => DetailScreen(filteredList[index]),));
-              },
-              child: Padding(
-                padding:  EdgeInsets.only(top:margin,),
-                child: Container(
-                  height: cellHeight,
-                  width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: margin,),
-                  padding: EdgeInsets.symmetric(horizontal: (margin/1.7),),
-
-                  decoration: BoxDecoration(
-                      color: cellColor,
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(radius)),
-                      border: Border.all(color: Colors.grey, width: 0.3)),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: (margin/0.7),horizontal: (margin/2)),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Expanded(
-                                  child: ConstantWidget.getCustomText(
-                                      filteredList[index].description,
-                                      textColor,2,
-                                      TextAlign.left,
-                                      FontWeight.bold,
-                                      ConstantWidget.getPercentSize(
-                                          cellHeight, 10)),
-                                ),
-                                Row(
-                                  children: [
-                                    getPriceCell(filteredList[index].price),
-                                    getCatCell(filteredList[index].group),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: ConstantWidget.getPercentSize(
-                                      cellHeight,5),
-                                ),
-                              ]),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
+        child: ListView.builder(
+      itemCount: filteredList.length,
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailScreen(filteredList[index]),
+                ));
           },
-        ) );
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: margin,
+            ),
+            child: Container(
+              height: cellHeight,
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(
+                horizontal: margin,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: (margin / 1.7),
+              ),
+              decoration: BoxDecoration(
+                  color: cellColor,
+                  borderRadius: BorderRadius.all(Radius.circular(radius)),
+                  border: Border.all(color: Colors.grey, width: 0.3)),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: (margin / 0.7), horizontal: (margin / 2)),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: ConstantWidget.getCustomText(
+                                  filteredList[index].description,
+                                  textColor,
+                                  2,
+                                  TextAlign.left,
+                                  FontWeight.bold,
+                                  ConstantWidget.getPercentSize(
+                                      cellHeight, 10)),
+                            ),
+                            Row(
+                              children: [
+                                getPriceCell(filteredList[index].price),
+                                getCatCell(filteredList[index].group),
+                              ],
+                            ),
+                            SizedBox(
+                              height:
+                                  ConstantWidget.getPercentSize(cellHeight, 5),
+                            ),
+                          ]),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    ));
   }
 
   Future<bool> _requestPop() {
@@ -258,15 +271,20 @@ class _SearchWidget extends State<SearchWidget> {
         children: [
           SizedBox(width: (margin)),
           Expanded(
-            child: ConstantWidget.getCustomText(s, subTextColor,1, TextAlign.left,
-                FontWeight.w600, ConstantWidget.getScreenPercentSize(context, 1.6)),
+            child: ConstantWidget.getCustomText(
+                s,
+                subTextColor,
+                1,
+                TextAlign.left,
+                FontWeight.w600,
+                ConstantWidget.getScreenPercentSize(context, 1.6)),
           ),
         ],
       ),
     );
   }
 
-    getCatCell(String s) {
+  getCatCell(String s) {
     double margin = ConstantWidget.getScreenPercentSize(context, 1);
 
     return Expanded(
@@ -274,8 +292,13 @@ class _SearchWidget extends State<SearchWidget> {
         children: [
           SizedBox(width: (margin)),
           Expanded(
-            child: ConstantWidget.getCustomText(s, ConstantData.color3,1, TextAlign.left,
-                FontWeight.w600, ConstantWidget.getScreenPercentSize(context, 1.6)),
+            child: ConstantWidget.getCustomText(
+                s,
+                ConstantData.color3,
+                1,
+                TextAlign.left,
+                FontWeight.w600,
+                ConstantWidget.getScreenPercentSize(context, 1.6)),
           ),
         ],
       ),

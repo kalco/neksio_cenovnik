@@ -52,7 +52,7 @@ android {
         applicationId "com.roka.neksio_cenovnik"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode flutterVersionCode.toInteger()
+        versionCode flutter1ersionCode.toInteger()
         versionName flutterVersionName
     }
 
