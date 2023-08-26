@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +35,7 @@ class _HomePage extends State<HomePage> {
   String query = '';
   String _version = "";
   String _buildNumber = "";
-  final databaseReference = FirebaseDatabase.instance.reference();
+final DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
   String query1 = '';
   late List<CenovnikModel> filteredList = [];
   var _searchview = TextEditingController();
@@ -235,10 +233,11 @@ class _HomePage extends State<HomePage> {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                                 Navigator.push(context,
-                                     MaterialPageRoute(
-                                        builder: (context) => SearchWidget(),
-                                      ));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SearchWidget(),
+                                  ));
                             },
                             child: Align(
                               alignment: Alignment.centerLeft,
@@ -289,7 +288,7 @@ class _HomePage extends State<HomePage> {
                 children: [
                   getHeaderTitle(S.of(context).searchByCategories,
                       s1: S.of(context).searchBy),
-                      SizedBox(height: (margin)),
+                  SizedBox(height: (margin)),
                   getProductList(context),
                 ],
               ),
@@ -307,7 +306,7 @@ class _HomePage extends State<HomePage> {
     double radius = ConstantWidget.getPercentSize(height, 18);
 
     return Scaffold(
-      body:  SafeArea(
+      body: SafeArea(
         child: Container(
           color: bgColor,
           child: Column(
@@ -315,19 +314,20 @@ class _HomePage extends State<HomePage> {
               Container(
                 height: height,
                 decoration: BoxDecoration(
-                    color: primaryColor,
-              ),
+                  color: primaryColor,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Container(
-                          margin: EdgeInsets.all(ConstantWidget.getScreenPercentSize(context, 2)),
+                          margin: EdgeInsets.all(
+                              ConstantWidget.getScreenPercentSize(context, 2)),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: InkWell(
-                              onTap: (){
+                              onTap: () {
                                 _requestPop();
                               },
                               child: const Icon(
@@ -335,18 +335,15 @@ class _HomePage extends State<HomePage> {
                                 color: Colors.white,
                               ),
                             ),
-                          )
-
-                      ),
-
-
-                      flex: 1,),
+                          )),
+                      flex: 1,
+                    ),
                     Container(
                       margin: EdgeInsets.all(
                           ConstantWidget.getScreenPercentSize(context, 2)),
                       padding: EdgeInsets.symmetric(
-                          horizontal: ConstantWidget.getScreenPercentSize(
-                              context, 1)),
+                          horizontal:
+                              ConstantWidget.getScreenPercentSize(context, 1)),
                       height: searchHeight,
                       decoration: BoxDecoration(
                           color: cellColor,
@@ -361,8 +358,7 @@ class _HomePage extends State<HomePage> {
                                   (searchHeight / 1.3), 50)),
                           Expanded(
                             child: InkWell(
-                              onTap: () {
-                              },
+                              onTap: () {},
                               child: Container(
                                 margin: EdgeInsets.symmetric(
                                     horizontal: (margin / 2)),
@@ -371,8 +367,7 @@ class _HomePage extends State<HomePage> {
                                   child: TextField(
                                     style: TextStyle(
                                         color: textColor,
-                                        fontSize:
-                                        ConstantWidget.getPercentSize(
+                                        fontSize: ConstantWidget.getPercentSize(
                                             searchHeight, 30)),
                                     controller: _searchview,
                                     decoration: InputDecoration(
@@ -380,9 +375,11 @@ class _HomePage extends State<HomePage> {
                                         hintStyle: TextStyle(
                                             color: Colors.grey,
                                             fontSize:
-                                            ConstantWidget.getPercentSize(
-                                                searchHeight, 30)),
-                                        hintText:  S.of(context).searchProductPlaceholder),
+                                                ConstantWidget.getPercentSize(
+                                                    searchHeight, 30)),
+                                        hintText: S
+                                            .of(context)
+                                            .searchProductPlaceholder),
                                   ),
                                 ),
                               ),
@@ -394,36 +391,43 @@ class _HomePage extends State<HomePage> {
                     ),
                   ],
                 ),
-
               ),
               StreamBuilder(
                 stream: databaseReference.onValue,
                 builder: (context, snapshot) {
                   List<CenovnikModel> cenovnikList = [];
                   if (snapshot.hasData) {
-                    final card = List<dynamic>.from((snapshot.data! as Event).snapshot.value);
-                    for (var key in card) {
-                      final next = Map<String, dynamic>.from(key);
-                      CenovnikModel descriptionModel = CenovnikModel(
-                        code: next['Code'].toString(),
-                        group: next['Group'].toString(),
-                        subgroup: next['Subgroup'].toString(),
-                        brend: next['Brend'].toString(),
-                        description: next['Description'].toString(),
-                        warranty: next['warranty (days)'].toString(),
-                        vat: next['Vat'].toString(),
-                        stock: next['Stock'].toString(),
-                        price: next['Price'].toString(),
-                      );
-                      cenovnikList.add(descriptionModel);
+                    DataSnapshot dataSnapshot = snapshot.data as DataSnapshot;
+                    Map<dynamic, dynamic>? card =
+                        dataSnapshot.value as Map<dynamic, dynamic>?;
+
+                    if (card != null) {
+                      card.forEach((key, value) {
+                        Map<String, dynamic> next =
+                            Map<String, dynamic>.from(value);
+                        CenovnikModel descriptionModel = CenovnikModel(
+                          code: next['productCode'].toString(),
+                          group: next['category'].toString(),
+                          subgroup: next['manufacturer'].toString(),
+                          brend: next['manufacturer'].toString(),
+                          description: next['description'].toString(),
+                          warranty: next['guaranteePeriodInDays'].toString(),
+                          vat: next['tax'].toString(),
+                          stock: next['inStock'].toString(),
+                          price: next['retailPriceWTax'].toString(),
+                        );
+                        cenovnikList.add(descriptionModel);
+                      });
                     }
                   }
-                  return query1.isNotEmpty ? _performSearch(cenovnikList) : Container();
+                  return query1.isNotEmpty
+                      ? _performSearch(cenovnikList)
+                      : Container();
                 },
               ),
             ],
           ),
-        ) ,
+        ),
       ),
     );
   }
@@ -660,18 +664,30 @@ class _HomePage extends State<HomePage> {
     return StreamBuilder(
       stream: databaseReference.onValue,
       builder: (context, snapshot) {
+       if (snapshot.hasError) {
+      print("Error: ${snapshot.error}");
+      return const Center(
+        child: Text('An error occurred while fetching data.'),
+      );
+    }
         List<String> group = [];
         if (snapshot.hasData) {
-          final card =
-              List<dynamic>.from((snapshot.data! as Event).snapshot.value);
-          for (var key in card) {
-            final next = Map<String, dynamic>.from(key);
-            group.add(next['Group']);
+          DataSnapshot dataSnapshot = snapshot.data as DataSnapshot;
+          Map<dynamic, dynamic>? card =
+              dataSnapshot.value as Map<dynamic, dynamic>?;
+          if (card != null) {
+            for (var key in card.keys) {
+              final next = Map<String, dynamic>.from(key);
+              group.add(next['category']);
+            }
           }
         }
+print("Snapshot Data: ${snapshot.data}");
+print("Groups: $group");
         ///product count in each category
         Map<String, int> count = {};
         group.forEach((i) => count[i] = (count[i] ?? 0) + 1);
+        print("Count: $count");
         return group.isNotEmpty
             ? Padding(
                 padding: EdgeInsets.symmetric(horizontal: margin),
@@ -688,9 +704,10 @@ class _HomePage extends State<HomePage> {
                           onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (BuildContext context) => ProductsPage(groupKey: g.key)
-                                //  builder: (BuildContext context) =>DescriptionPage(groupKey: g)
-                              )),
+                                  builder: (BuildContext context) =>
+                                      ProductsPage(groupKey: g.key)
+                                  //  builder: (BuildContext context) =>DescriptionPage(groupKey: g)
+                                  )),
                           child: Container(
                             height: cellHeight,
                             decoration: BoxDecoration(
@@ -725,31 +742,26 @@ class _HomePage extends State<HomePage> {
                                       ConstantWidget.getPercentSize(
                                           cellHeight, 11)),
                                   ConstantWidget.getCustomText(
-                                    S.of(context).totalProducts(g.value),
+                                      S.of(context).totalProducts(g.value),
                                       hightLightColor,
                                       1,
                                       TextAlign.center,
                                       FontWeight.w600,
                                       ConstantWidget.getPercentSize(
-                                          cellHeight, 8)),       
+                                          cellHeight, 8)),
                                 ],
-                               
                               ),
                             ),
                           ),
-                          
                         ),
                       )
                       .toList(),
-                       
                 ),
               )
-              
             : const Center(
-                child: CircularProgressIndicator(),
+                child:Text('No data available'),
               );
       },
-      
     );
   }
 
@@ -784,67 +796,78 @@ class _HomePage extends State<HomePage> {
     double margin = ConstantWidget.getScreenPercentSize(context, 2);
     double cellHeight = ConstantWidget.getWidthPercentSize(context, 35);
     return Flexible(
-        child:ListView.builder(
-          itemCount: filteredList.length,
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: (){
-                Navigator.push(context,MaterialPageRoute(builder: (context) => DetailScreen(filteredList[index]),));
-              },
-              child: Padding(
-                padding:  EdgeInsets.only(top:margin,),
-                child: Container(
-                  height: cellHeight,
-                  width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: margin,),
-                  padding: EdgeInsets.symmetric(horizontal: (margin/1.7),),
-
-                  decoration: BoxDecoration(
-                      color: cellColor,
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(radius)),
-                      border: Border.all(color: Colors.grey, width: 0.3)),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: (margin/0.7),horizontal: (margin/2)),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Expanded(
-                                  child: ConstantWidget.getCustomText(
-                                      filteredList[index].description,
-                                      textColor,2,
-                                      TextAlign.left,
-                                      FontWeight.bold,
-                                      ConstantWidget.getPercentSize(
-                                          cellHeight, 10)),
-                                ),
-                                Row(
-                                  children: [
-                                    getPriceCell(filteredList[index].price),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: ConstantWidget.getPercentSize(
-                                      cellHeight,5),
-                                ),
-                              ]),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
+        child: ListView.builder(
+      itemCount: filteredList.length,
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailScreen(filteredList[index]),
+                ));
           },
-        ) );
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: margin,
+            ),
+            child: Container(
+              height: cellHeight,
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(
+                horizontal: margin,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: (margin / 1.7),
+              ),
+              decoration: BoxDecoration(
+                  color: cellColor,
+                  borderRadius: BorderRadius.all(Radius.circular(radius)),
+                  border: Border.all(color: Colors.grey, width: 0.3)),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: (margin / 0.7), horizontal: (margin / 2)),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: ConstantWidget.getCustomText(
+                                  filteredList[index].description,
+                                  textColor,
+                                  2,
+                                  TextAlign.left,
+                                  FontWeight.bold,
+                                  ConstantWidget.getPercentSize(
+                                      cellHeight, 10)),
+                            ),
+                            Row(
+                              children: [
+                                getPriceCell(filteredList[index].price),
+                              ],
+                            ),
+                            SizedBox(
+                              height:
+                                  ConstantWidget.getPercentSize(cellHeight, 5),
+                            ),
+                          ]),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    ));
   }
+
   getPriceCell(String s) {
     double margin = ConstantWidget.getScreenPercentSize(context, 1);
 
@@ -853,8 +876,13 @@ class _HomePage extends State<HomePage> {
         children: [
           SizedBox(width: (margin)),
           Expanded(
-            child: ConstantWidget.getCustomText(s, textColor,1, TextAlign.left,
-                FontWeight.w500, ConstantWidget.getScreenPercentSize(context, 1.5)),
+            child: ConstantWidget.getCustomText(
+                s,
+                textColor,
+                1,
+                TextAlign.left,
+                FontWeight.w500,
+                ConstantWidget.getScreenPercentSize(context, 1.5)),
           ),
         ],
       ),

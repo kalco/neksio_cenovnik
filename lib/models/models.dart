@@ -13,28 +13,28 @@ class CenovnikModel {
       required this.price});
 
   factory CenovnikModel.fromJson(json) => CenovnikModel(
-        code: json['Code'] as String,
-        group: json['Group'] as String,
-        subgroup: json['Subgroup'] as String,
-        brend: json['Brend'] as String,
-        description: json['Description'] as String,
-        warranty: json['warranty (days)'] as String,
-        vat: json['Vat'] as String,
-        stock: json['Stock'] as String,
-        price: json['Price'] as String,
+        code: json['productCode'] as String,
+        group: json['category'] as String,
+        subgroup: json['manufacturer'] as String,
+        brend: json['manufacturer'] as String,
+        description: json['description'] as String,
+        warranty: json['guaranteePeriodInDays'] as String,
+        vat: json['tax'] as String,
+        stock: json['inStock'] as String,
+        price: json['retailPriceWTax'] as String,
       );
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['Code'] = code;
-    data['Group'] = group;
-    data['Subgroup'] = subgroup;
-    data['Brend'] = brend;
-    data['Description'] = description;
-    data['warranty (days)'] = warranty;
-    data['Vat'] = vat;
-    data['Stock'] = stock;
-    data['Price'] = price;
+    data['productCode'] = code;
+    data['category'] = group;
+    data['manufacturer'] = subgroup;
+    data['manufacturer'] = brend;
+    data['description'] = description;
+    data['guaranteePeriodInDays'] = warranty;
+    data['tax'] = vat;
+    data['inStock'] = stock;
+    data['retailPriceWTax'] = price;
     return data;
   }
 }

@@ -16,9 +16,8 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPage extends State<ProductsPage> {
-
-  final databaseReference = FirebaseDatabase.instance.reference();
-  var _searchview = TextEditingController();
+  final DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
+  final _searchview = TextEditingController();
   String query = '';
   late List<CenovnikModel> groupDeleteDublicate;
   late List<CenovnikModel> filteredList = [];
@@ -71,56 +70,63 @@ class _ProductsPage extends State<ProductsPage> {
 
     return WillPopScope(
         child: Scaffold(
-          resizeToAvoidBottomInset : false,
+          resizeToAvoidBottomInset: false,
           backgroundColor: bgColor,
           body: SafeArea(
             child: Container(
               margin: const EdgeInsets.only(bottom: 15),
-               child:
-               StreamBuilder(
-                    stream: databaseReference.onValue,
-                    builder: (context, snapshot) {
-                      List<CenovnikModel> group = [];
-                      if (snapshot.hasData) {
-                        final card = List<dynamic>.from((snapshot.data! as Event).snapshot.value);
-                        for (var key in card) {
-                          final json = Map<String, dynamic>.from(key);
-                          CenovnikModel descriptionModel = CenovnikModel(
-                            code: json['Code'].toString(),
-                            group: json['Group'].toString(),
-                            subgroup: json['Subgroup'].toString(),
-                            brend: json['Brend'].toString(),
-                            description: json['Description'].toString(),
-                            warranty: json['warranty (days)'].toString(),
-                            vat: json['Vat'].toString(),
-                            stock: json['Stock'].toString(),
-                            price: json['Price'].toString(),
-                          );
-                          group.add(descriptionModel);
-                        }
-                      }
-                      groupDeleteDublicate = getDeleteDuplicate(group);
-                      return group.isNotEmpty
+              child: StreamBuilder(
+                stream: databaseReference.onValue,
+                builder: (context, snapshot) {
+                  List<CenovnikModel> group = [];
+                  if (snapshot.hasData) {
+                    DataSnapshot dataSnapshot = snapshot.data as DataSnapshot;
+                    Map<dynamic, dynamic>? card =
+                        dataSnapshot.value as Map<dynamic, dynamic>?;
+
+                    if (card != null) {
+                      card.forEach((key, value) {
+                        Map<String, dynamic> json =
+                            Map<String, dynamic>.from(value);
+                        CenovnikModel descriptionModel = CenovnikModel(
+                          code: json['productCode'].toString(),
+                          group: json['category'].toString(),
+                          subgroup: json['manufacturer'].toString(),
+                          brend: json['manufacturer'].toString(),
+                          description: json['description'].toString(),
+                          warranty: json['guaranteePeriodInDays'].toString(),
+                          vat: json['tax'].toString(),
+                          stock: json['inStock'].toString(),
+                          price: json['retailPriceWTax'].toString(),
+                        );
+                        group.add(descriptionModel);
+                      });
+                    }
+                  }
+                  groupDeleteDublicate = getDeleteDuplicate(group);
+                  return group.isNotEmpty
                       ? Column(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                              child:Container(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Container(
                                 height: height,
                                 decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    ),
+                                  color: primaryColor,
+                                ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Expanded(
                                       child: Container(
-                                          margin: EdgeInsets.all(ConstantWidget.getScreenPercentSize(context, 2)),
+                                          margin: EdgeInsets.all(ConstantWidget
+                                              .getScreenPercentSize(
+                                                  context, 2)),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: InkWell(
-                                              onTap: (){
+                                              onTap: () {
                                                 _requestPop();
                                               },
                                               child: const Icon(
@@ -128,51 +134,63 @@ class _ProductsPage extends State<ProductsPage> {
                                                 color: Colors.white,
                                               ),
                                             ),
-                                          )
-
-                                      ),
-                                      flex: 1,),
-                                    Expanded(
+                                          )),
                                       flex: 1,
-                                        child:Container(
-                                          margin: EdgeInsets.all(ConstantWidget.getScreenPercentSize(context, 2)),
-                                          padding: EdgeInsets.symmetric(horizontal: ConstantWidget.getScreenPercentSize(
-                                                  context, 1)),
+                                    ),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          margin: EdgeInsets.all(ConstantWidget
+                                              .getScreenPercentSize(
+                                                  context, 2)),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: ConstantWidget
+                                                  .getScreenPercentSize(
+                                                      context, 1)),
                                           height: searchHeight,
                                           decoration: BoxDecoration(
                                               color: cellColor,
-                                              borderRadius: BorderRadius.all(Radius.circular(
-                                                  ConstantWidget.getPercentSize(
-                                                      searchHeight, 18)))),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(ConstantWidget
+                                                      .getPercentSize(
+                                                          searchHeight, 18)))),
                                           child: Row(
                                             children: [
                                               Icon(LineIcons.search,
                                                   color: textColor,
-                                                  size: ConstantWidget.getPercentSize(
-                                                      (searchHeight / 1.3), 50)),
+                                                  size: ConstantWidget
+                                                      .getPercentSize(
+                                                          (searchHeight / 1.3),
+                                                          50)),
                                               Expanded(
                                                 child: InkWell(
-                                                  onTap: () {
-                                                  },
+                                                  onTap: () {},
                                                   child: Container(
-                                                    margin: EdgeInsets.symmetric(
-                                                        horizontal: (margin / 2)),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal:
+                                                                (margin / 2)),
                                                     child: Align(
-                                                      alignment: Alignment.centerLeft,
+                                                      alignment:
+                                                          Alignment.centerLeft,
                                                       child: TextField(
                                                         style: TextStyle(
                                                             color: textColor,
-                                                            fontSize:
-                                                            ConstantWidget.getPercentSize(
-                                                                searchHeight, 30)),
+                                                            fontSize: ConstantWidget
+                                                                .getPercentSize(
+                                                                    searchHeight,
+                                                                    30)),
                                                         controller: _searchview,
                                                         decoration: InputDecoration(
-                                                            border: InputBorder.none,
+                                                            border: InputBorder
+                                                                .none,
                                                             hintStyle: TextStyle(
-                                                                color: Colors.grey,
-                                                                fontSize:
-                                                                ConstantWidget.getPercentSize(
-                                                                    searchHeight, 30)),
+                                                                color:
+                                                                    Colors.grey,
+                                                                fontSize: ConstantWidget
+                                                                    .getPercentSize(
+                                                                        searchHeight,
+                                                                        30)),
                                                             hintText: S
                                                                 .of(context)
                                                                 .searchProductPlaceholder),
@@ -184,79 +202,119 @@ class _ProductsPage extends State<ProductsPage> {
                                               ),
                                             ],
                                           ),
-                                        ) ),
+                                        )),
                                   ],
                                 ),
-
-                              ), ),
-                          query.isNotEmpty ? _performSearch(groupDeleteDublicate) :
-                          Expanded(
-                            flex: 10,
-                              child:ListView.builder(
-                                itemCount: groupDeleteDublicate.length,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: (){
-                                        Navigator.push(context,MaterialPageRoute(builder: (context) => DetailScreen(groupDeleteDublicate[index]),));
-                                    },
-                                    child: Padding(
-                                      padding:  EdgeInsets.only(top:margin,),
-                                      child: Container(
-                                        height: cellHeight,
-                                        width: double.infinity,
-                                        margin: EdgeInsets.symmetric(horizontal: margin,),
-                                        padding: EdgeInsets.symmetric(horizontal: (margin/1.7),),
-
-                                        decoration: BoxDecoration(
-                                            color: cellColor,
-                                            borderRadius:
-                                            BorderRadius.all(Radius.circular(radius)),
-                                            border: Border.all(color: Colors.grey, width: 0.3)),
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(vertical: (margin/0.7),horizontal: (margin/2)),
-                                                child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisSize: MainAxisSize.max,
-                                                    children: [
-                                                      Expanded(
-                                                        child: ConstantWidget.getCustomText(
-                                                            groupDeleteDublicate[index].description,
-                                                            textColor,2,
-                                                            TextAlign.left,
-                                                            FontWeight.bold,
-                                                            ConstantWidget.getPercentSize(
-                                                                cellHeight, 10)),
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          getPriceCell(groupDeleteDublicate[index].price),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: ConstantWidget.getPercentSize(
-                                                            cellHeight,5),
-                                                      ),
-                                                    ]),
+                              ),
+                            ),
+                            query.isNotEmpty
+                                ? _performSearch(groupDeleteDublicate)
+                                : Expanded(
+                                    flex: 10,
+                                    child: ListView.builder(
+                                      itemCount: groupDeleteDublicate.length,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemBuilder: (context, index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailScreen(
+                                                          groupDeleteDublicate[
+                                                              index]),
+                                                ));
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              top: margin,
+                                            ),
+                                            child: Container(
+                                              height: cellHeight,
+                                              width: double.infinity,
+                                              margin: EdgeInsets.symmetric(
+                                                horizontal: margin,
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ) )
-                        ],
-                      )
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: (margin / 1.7),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                  color: cellColor,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              radius)),
+                                                  border: Border.all(
+                                                      color: Colors.grey,
+                                                      width: 0.3)),
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical:
+                                                                  (margin /
+                                                                      0.7),
+                                                              horizontal:
+                                                                  (margin / 2)),
+                                                      child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Expanded(
+                                                              child: ConstantWidget.getCustomText(
+                                                                  groupDeleteDublicate[
+                                                                          index]
+                                                                      .description,
+                                                                  textColor,
+                                                                  2,
+                                                                  TextAlign
+                                                                      .left,
+                                                                  FontWeight
+                                                                      .bold,
+                                                                  ConstantWidget
+                                                                      .getPercentSize(
+                                                                          cellHeight,
+                                                                          10)),
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                getPriceCell(
+                                                                    groupDeleteDublicate[
+                                                                            index]
+                                                                        .price),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: ConstantWidget
+                                                                  .getPercentSize(
+                                                                      cellHeight,
+                                                                      5),
+                                                            ),
+                                                          ]),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ))
+                          ],
+                        )
                       : const Center(child: CircularProgressIndicator());
-              	  },
-                  ),
+                },
+              ),
             ),
           ),
         ),
@@ -310,8 +368,13 @@ class _ProductsPage extends State<ProductsPage> {
         children: [
           SizedBox(width: (margin)),
           Expanded(
-            child: ConstantWidget.getCustomText(s, subTextColor,1, TextAlign.left,
-                FontWeight.w600, ConstantWidget.getScreenPercentSize(context, 1.6)),
+            child: ConstantWidget.getCustomText(
+                s,
+                subTextColor,
+                1,
+                TextAlign.left,
+                FontWeight.w600,
+                ConstantWidget.getScreenPercentSize(context, 1.6)),
           ),
         ],
       ),
@@ -336,34 +399,44 @@ class _ProductsPage extends State<ProductsPage> {
     double margin = ConstantWidget.getScreenPercentSize(context, 2);
     double cellHeight = ConstantWidget.getWidthPercentSize(context, 35);
     return Expanded(
-      flex: 9,
-        child:ListView.builder(
+        flex: 9,
+        child: ListView.builder(
           itemCount: filteredList.length,
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
           itemBuilder: (context, index) {
             return InkWell(
-              onTap: (){
-                Navigator.push(context,MaterialPageRoute(builder: (context) => DetailScreen(filteredList[index]),));
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailScreen(filteredList[index]),
+                    ));
               },
               child: Padding(
-                padding:  EdgeInsets.only(top:margin,),
+                padding: EdgeInsets.only(
+                  top: margin,
+                ),
                 child: Container(
                   height: cellHeight,
                   width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: margin,),
-                  padding: EdgeInsets.symmetric(horizontal: (margin/1.7),),
-
+                  margin: EdgeInsets.symmetric(
+                    horizontal: margin,
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: (margin / 1.7),
+                  ),
                   decoration: BoxDecoration(
                       color: cellColor,
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(radius)),
+                      borderRadius: BorderRadius.all(Radius.circular(radius)),
                       border: Border.all(color: Colors.grey, width: 0.3)),
                   child: Row(
                     children: [
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: (margin/0.7),horizontal: (margin/2)),
+                          padding: EdgeInsets.symmetric(
+                              vertical: (margin / 0.7),
+                              horizontal: (margin / 2)),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,7 +445,8 @@ class _ProductsPage extends State<ProductsPage> {
                                 Expanded(
                                   child: ConstantWidget.getCustomText(
                                       filteredList[index].description,
-                                      textColor,2,
+                                      textColor,
+                                      2,
                                       TextAlign.left,
                                       FontWeight.bold,
                                       ConstantWidget.getPercentSize(
@@ -385,7 +459,7 @@ class _ProductsPage extends State<ProductsPage> {
                                 ),
                                 SizedBox(
                                   height: ConstantWidget.getPercentSize(
-                                      cellHeight,5),
+                                      cellHeight, 5),
                                 ),
                               ]),
                         ),
@@ -396,6 +470,6 @@ class _ProductsPage extends State<ProductsPage> {
               ),
             );
           },
-        ) );
+        ));
   }
 }

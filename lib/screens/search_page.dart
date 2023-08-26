@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +17,7 @@ class SearchWidget extends StatefulWidget {
 
 class _SearchWidget extends State<SearchWidget> {
   var _searchview = TextEditingController();
-  final databaseReference = FirebaseDatabase.instance.reference();
+  final DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
   String query = '';
   late List<CenovnikModel> filteredList = [];
 
@@ -136,23 +135,27 @@ class _SearchWidget extends State<SearchWidget> {
                     builder: (context, snapshot) {
                       List<CenovnikModel> cenovnikList = [];
                       if (snapshot.hasData) {
-                        final card = List<dynamic>.from(
-                            (snapshot.data! as Event).snapshot.value);
-                        for (var key in card) {
-                          final next = Map<String, dynamic>.from(key);
+                        DataSnapshot dataSnapshot =
+                            snapshot.data as DataSnapshot;
+                        Map<dynamic, dynamic> card =
+                            dataSnapshot.value as Map<dynamic, dynamic>;
+
+                        card.forEach((key, value) {
+                          Map<String, dynamic> next =
+                              Map<String, dynamic>.from(value);
                           CenovnikModel descriptionModel = CenovnikModel(
-                            code: next['Code'].toString(),
-                            group: next['Group'].toString(),
-                            subgroup: next['Subgroup'].toString(),
-                            brend: next['Brend'].toString(),
-                            description: next['Description'].toString(),
-                            warranty: next['warranty (days)'].toString(),
-                            vat: next['Vat'].toString(),
-                            stock: next['Stock'].toString(),
-                            price: next['Price'].toString(),
+                          code: next['productCode'].toString(),
+                          group: next['category'].toString(),
+                          subgroup: next['manufacturer'].toString(),
+                          brend: next['manufacturer'].toString(),
+                          description: next['description'].toString(),
+                          warranty: next['guaranteePeriodInDays'].toString(),
+                          vat: next['tax'].toString(),
+                          stock: next['inStock'].toString(),
+                          price: next['retailPriceWTax'].toString(),
                           );
                           cenovnikList.add(descriptionModel);
-                        }
+                        });
                       }
                       return query.isNotEmpty
                           ? _performSearch(cenovnikList)

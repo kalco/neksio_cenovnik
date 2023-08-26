@@ -2,7 +2,9 @@
     package="com.roka.neksio_cenovnik">
    <application
         android:label="Нексио"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:networkSecurityConfig="@xml/network_security_config">
+        <uses-permission android:name="android.permission.INTERNET"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -19,8 +21,8 @@
               android:resource="@style/NormalTheme"
               />
               <meta-data
-   android:name="com.google.firebase.messaging.default_notification_icon"
-   android:resource="@drawable/ic_stat_ic_stat_ic_notification" />
+              android:name="com.google.firebase.messaging.default_notification_icon"
+              android:resource="@drawable/ic_stat_ic_stat_ic_notification" />
    
 
             <intent-filter>
